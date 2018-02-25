@@ -12,12 +12,16 @@ public class Util {
     static final int SHORT_OPTION_LENGTH = 2;
     private static final Pattern s_naturalIntegerPattern = Pattern.compile("\\d+");
     private static final Pattern s_positiveIntegerPattern = Pattern.compile("[1-9]\\d*");
+    private static final Pattern s_integerPattern = Pattern.compile("-?\\d+");
 
     private static final Predicate<String> s_isNaturalNumber =
             value -> s_naturalIntegerPattern.matcher(value).matches();
 
     private static final Predicate<String> s_isPositiveInteger =
             value -> s_positiveIntegerPattern.matcher(value).matches();
+
+    private static final Predicate<String> s_isInteger =
+            value -> s_integerPattern.matcher(value).matches();
 
     private static final ExceptionHandler s_rethrowExceptionHandler = (exception, configuration, args) -> {
         throw exception;
@@ -31,6 +35,11 @@ public class Util {
     public static Predicate<String> isPositiveInteger()
     {
         return s_isPositiveInteger;
+    }
+
+    public static Predicate<String> isInteger()
+    {
+        return s_isInteger;
     }
 
     public static Consumer<String> fromIntConsumer(Consumer<Integer> consumer) {
