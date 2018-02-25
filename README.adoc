@@ -1,0 +1,87 @@
+= commandline
+Vladimir Elkin <elkin.v.n@gmail.com>
+:source-highlighter: highlightjs
+:icons: font
+:toc:
+
+Easy to use, extensible command line parser written in Java with no
+dependencies. Supports both UNIX and GNU command line options
+conventions.
+
+== What is supported
+
+* positional arguments(obvious one)
+* short options
++
+Value for the option is provided in the next argument or is sticked to the
+option: +
+`-t <value>` or `-t<value>`
+
+* long options
++
+Value for the option is provided in the next argument or is sticked to the
+option with `=` separating them: +
+`--url <value>` or `--url=<value>`
+
+* flags
++
+flag is an option without a value i.e. `-f` or `--flag`
+
+* short flags can stick to each other
++
+`-f -t` is the same as `-ft` or `-tf`
+
+* help generation
+* mutual exclusive groups
++
+Sometimes there're options/flags that can't be used together in one command line.
+`GroupValidator` helps with the issue.
+
+== How to extend
+
+* argument/option value checker
++
+If you want make some constraints on the value of an argument, option set
+checker for it. There're few available in the `Util` class.
++
+For example if option is a choice(i.e. can have only few values) you can use
+`Util.choice()` checker.
+
+* help generator
++
+You can provide your own help generator to `CommandLineConfiguration`
+constructor.
+
+* command line validator
+
+== Examples
+
+=== Primitive calculator
+
+It gets operation type from the option `-t` or `--type`. There're four
+operation types: sum, production, subtraction. Possible values are: sum,
+prod, sub. Positional arguments are the numbers. Also there's a flag `-v` or
+`--verbose` for printing the whole expression. The whole example you can find
+in the file
+link:examples/src/main/java/io/github/elkin/commandline/SimpleCalculator.java[SimpleCalculator.java].
+
+[source, java]
+----
+CommandLineConfiguration configuration = new CommandLineConfiguration();
+RequiredArgument argument = configuration.addRequiredArgument("numbers")
+        .setDescription("Integer number")
+        .setChecker(Util.isInteger())
+        .addDefaultValue("0");
+
+Option option = configuration.addOption("operation", "-o")
+        .addPrefix("--operation")
+        .setDescription("Operation type")
+        .addDefaultValue("sum")
+        .setChecker(Util.choice("sum", "prod", "sub"));
+
+Flag flag = configuration.addFlag("verbose", "-v")
+        .addPrefix("--verbose")
+        .setDescription("Verbose mode");
+
+CommandLine.parse(configuration, args);
+----
