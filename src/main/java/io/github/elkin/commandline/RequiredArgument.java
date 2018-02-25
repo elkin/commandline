@@ -6,10 +6,19 @@ import java.util.function.Predicate;
 public class RequiredArgument extends Argument {
     private String d_value;
     private Values d_remainder;
+    private Values d_values;
 
     RequiredArgument(String name, int position) {
         super(name, true, position);
         d_remainder = ValuesImpl.empty();
+        d_values = ValuesImpl.empty();
+    }
+
+    @Override
+    public RequiredArgument addDefaultValue(String value)
+    {
+        super.addDefaultValue(value);
+        return this;
     }
 
     @Override
@@ -19,6 +28,7 @@ public class RequiredArgument extends Argument {
         assert !value.isEmpty();
 
         d_value = value;
+        d_values = new ValuesImpl(value);
     }
 
     @Override
@@ -28,6 +38,7 @@ public class RequiredArgument extends Argument {
         assert !remainder.isEmpty();
 
         d_remainder = remainder;
+        d_values = new ValuesImpl(d_value, d_remainder);
     }
 
     @Override
@@ -59,6 +70,11 @@ public class RequiredArgument extends Argument {
     public Values remainder()
     {
         return d_remainder;
+    }
+
+    public Values values()
+    {
+        return d_values;
     }
 
     @Override
