@@ -43,7 +43,6 @@ public class CommandLineConfiguration {
     private final FlagPrefixHandler d_flagPrefixHandler;
     private int d_position;
     private int d_maxLastArgumentSize;
-    private String d_usageLine;
     private List<Validator> d_checkers;
 
     private void checkNameDuplicates(String name, Type nameType)
@@ -146,10 +145,9 @@ public class CommandLineConfiguration {
         d_flagByPrefix = new HashMap<>();
         d_names = new HashMap<>();
         d_position = 0;
-        d_maxLastArgumentSize = 1;
+        d_maxLastArgumentSize = Integer.MAX_VALUE;
         d_optionPrefixHandler = this::checkOptionPrefix;
         d_flagPrefixHandler = this::checkFlagPrefix;
-        d_usageLine = "";
         d_checkers = new ArrayList<>();
 
         addFlag("help", "-h")
@@ -241,18 +239,7 @@ public class CommandLineConfiguration {
         return this;
     }
 
-    public String usageLine()
-    {
-        return d_usageLine;
-    }
-
-    public CommandLineConfiguration setUsageLine(String usageLine)
-    {
-        d_usageLine = Objects.requireNonNull(usageLine);
-        return this;
-    }
-
-    public void addChecker(Validator checker)
+    public void addValidator(Validator checker)
     {
         d_checkers.add(Objects.requireNonNull(checker));
     }
