@@ -12,7 +12,12 @@ import io.github.elkin.commandline.exception.ValidationException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -1315,7 +1320,7 @@ public class CommandLineTest {
         d_configuration.addRequiredArgument("test2");
     }
 
-    @Test(expectedExceptions = CheckException.class)
+    @Test(expectedExceptions = ValidationException.class)
     public void incompatibleOptions()
     {
         Option option = d_configuration.addOption("option", "-o");
@@ -1326,12 +1331,12 @@ public class CommandLineTest {
                 .addOption(option);
         checker.addGroup()
                 .addOption(option2);
-        d_configuration.addChecker(checker);
+        d_configuration.addValidator(checker);
 
         parse(d_configuration, new String[] {"-oasd", "-tdf"});
     }
 
-    @Test(expectedExceptions = CheckException.class)
+    @Test(expectedExceptions = ValidationException.class)
     public void incompatibleFlags()
     {
         Flag flag = d_configuration.addFlag("flag", "-s");
@@ -1342,12 +1347,12 @@ public class CommandLineTest {
                 .addFlag(flag);
         checker.addGroup()
                 .addFlag(flag2);
-        d_configuration.addChecker(checker);
+        d_configuration.addValidator(checker);
 
         parse(d_configuration, new String[] {"-fs"});
     }
 
-    @Test(expectedExceptions = CheckException.class)
+    @Test(expectedExceptions = ValidationException.class)
     public void incompatibleOptionFlag()
     {
         Flag flag = d_configuration.addFlag("flag", "-s");
@@ -1358,7 +1363,7 @@ public class CommandLineTest {
                 .addFlag(flag);
         checker.addGroup()
                 .addOption(option);
-        d_configuration.addChecker(checker);
+        d_configuration.addValidator(checker);
 
         parse(d_configuration, new String[] {"-s", "--option=1"});
     }

@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-class DefaultHelpGenerator implements HelpGenerator {
+public class DefaultHelpGenerator implements HelpGenerator {
     private static final int MAX_COLUMN_WIDTH = 80;
     private static final String DEFAULT_USAGE_LINE = "java -cp ${CLASSPATH} ${MAIN_CLASS} [OPTIONS] ";
 
@@ -170,14 +170,14 @@ class DefaultHelpGenerator implements HelpGenerator {
         return option.prefixes().stream().collect(Collectors.joining(", "));
     }
 
-    DefaultHelpGenerator(String usageLine)
+    public DefaultHelpGenerator(String usageLine)
     {
         assert usageLine != null;
 
         d_usageLine = usageLine.isEmpty()? DEFAULT_USAGE_LINE: usageLine;
     }
 
-    DefaultHelpGenerator()
+    public DefaultHelpGenerator()
     {
         this("");
     }
