@@ -1,6 +1,6 @@
 package io.github.elkin.commandline;
 
-import io.github.elkin.commandline.exception.CheckException;
+import io.github.elkin.commandline.exception.ValidationException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -153,7 +153,7 @@ public class GroupValidator implements Validator {
                 result.append(group);
                 result.append('\n');
             }
-            throw new CheckException(result.toString());
+            throw new ValidationException(result.toString());
         }
     }
 }
