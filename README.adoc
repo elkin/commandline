@@ -58,7 +58,7 @@ constructor.
 
 === Primitive calculator
 
-It gets operation type from the option `-t` or `--type`. There're four
+It gets operation type from the option `-o` or `--operation`. There're four
 operation types: sum, production, subtraction. Possible values are: sum,
 prod, sub. Positional arguments are the numbers. Also there's a flag `-v` or
 `--verbose` for printing the whole expression. The whole example you can find
