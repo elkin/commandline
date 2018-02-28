@@ -1,3 +1,5 @@
+image:https://travis-ci.org/elkin/commandline.svg?branch=master["Build Status", link="https://travis-ci.org/elkin/commandline"]
+
 = commandline
 Vladimir Elkin <elkin.v.n@gmail.com>
 :source-highlighter: highlightjs
