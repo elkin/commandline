@@ -271,13 +271,13 @@ class CommandLineParser {
 
     void parse()
     {
-        CommandLineHandler commandLineHandler = new CommandLineHandler(
+        CommandLineIterator commandLineIterator = new CommandLineIterator(
                 this::handleArgument,
                 d_configuration::isPrefixRegistered,
                 this::handleOption,
                 this::handleFlag);
 
-        commandLineHandler.iterate(d_args);
+        commandLineIterator.iterate(d_args);
 
         d_configuration.options().forEach(option ->
             option.setValues(

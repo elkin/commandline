@@ -7,7 +7,7 @@ import io.github.elkin.commandline.exception.UnknownPrefixException;
 import java.util.Iterator;
 import java.util.List;
 
-class CommandLineHandler {
+class CommandLineIterator {
     @FunctionalInterface
     interface ArgumentHandler {
         boolean handle(String argument);
@@ -33,10 +33,10 @@ class CommandLineHandler {
     private final OptionHandler d_optionHandler;
     private final FlagHandler d_flagHandler;
 
-    CommandLineHandler(ArgumentHandler argumentHandler,
-                       PrefixChecker prefixChecker,
-                       OptionHandler optionHandler,
-                       FlagHandler flagHandler)
+    CommandLineIterator(ArgumentHandler argumentHandler,
+                        PrefixChecker prefixChecker,
+                        OptionHandler optionHandler,
+                        FlagHandler flagHandler)
     {
         d_argumentHandler = argumentHandler;
         d_prefixChecker = prefixChecker;
