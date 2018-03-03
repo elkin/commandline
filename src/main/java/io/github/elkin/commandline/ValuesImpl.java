@@ -21,6 +21,7 @@ class ValuesImpl implements Values {
     ValuesImpl(String value)
     {
         assert value != null;
+        assert !value.isEmpty();
 
         d_values = Collections.singletonList(value);
     }
@@ -35,13 +36,12 @@ class ValuesImpl implements Values {
     ValuesImpl(String firstValue, Values remainder)
     {
         assert firstValue != null;
+        assert !firstValue.isEmpty();
         assert  remainder != null;
 
         d_values = new ArrayList<>(1 + remainder.size());
         d_values.add(firstValue);
-        for (String value : remainder) {
-            d_values.add(value);
-        }
+        remainder.toList(d_values);
         d_values = Collections.unmodifiableList(d_values);
     }
 
