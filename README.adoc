@@ -85,3 +85,19 @@ Flag flag = configuration.addFlag("verbose", "-v")
 
 CommandLine.parse(configuration, args);
 ----
+
+On `-h` or `--help` it prints:
+
+[source, bash]
+----
+Usage: java -cp ${CLASSPATH} ${MAIN_CLASS} [OPTIONS] numbers  [numbers...]
+
+Positional arguments:
+  numbers  Integer number (default: 0)
+
+Prefixed arguments:
+  Optional:
+    --operation, -o  Operation type (default: sum)
+    --help, -h       print help information and exit
+    --verbose, -v    Verbose mode
+----
