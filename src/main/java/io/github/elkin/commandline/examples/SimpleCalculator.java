@@ -1,4 +1,11 @@
-package io.github.elkin.commandline;
+package io.github.elkin.commandline.examples;
+
+import io.github.elkin.commandline.CommandLine;
+import io.github.elkin.commandline.CommandLineConfiguration;
+import io.github.elkin.commandline.Flag;
+import io.github.elkin.commandline.Option;
+import io.github.elkin.commandline.RequiredArgument;
+import io.github.elkin.commandline.Util;
 
 import java.util.HashMap;
 import java.util.Map;
