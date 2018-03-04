@@ -1362,4 +1362,12 @@ public class CommandLineTest {
 
         parse(d_configuration, new String[] {"-s", "--option=1"});
     }
+
+    @Test
+    public void defaultCommandLineConfigurationDescriptionIsEmptyString()
+    {
+        CommandLineConfiguration configuration = new CommandLineConfiguration();
+        assertEquals(configuration.description(), "");
+    }
+
 }

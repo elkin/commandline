@@ -136,6 +136,7 @@ public class CommandLineConfiguration {
 
     public CommandLineConfiguration(HelpGenerator helpGenerator)
     {
+        d_description = "";
         d_helpGenerator = Objects.requireNonNull(helpGenerator);
         d_arguments = new ArrayList<>();
         d_options = new ArrayList<>();
