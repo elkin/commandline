@@ -63,7 +63,7 @@ operation types: sum, production, subtraction. Possible values are: sum,
 prod, sub. Positional arguments are the numbers. Also there's a flag `-v` or
 `--verbose` for printing the whole expression. The whole example you can find
 in the file
-link:examples/src/main/java/io/github/elkin/commandline/SimpleCalculator.java[SimpleCalculator.java].
+link:src/main/java/io/github/elkin/commandline/examples/SimpleCalculator.java[SimpleCalculator.java].
 
 [source, java]
 ----
