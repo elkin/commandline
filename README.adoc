@@ -42,17 +42,19 @@ Sometimes there're options/flags that can't be used together in one command line
 * argument/option value checker
 +
 If you want make some constraints on the value of an argument, option set
-checker for it. There're few available in the `Util` class.
+checker for it. There're few available in the link:https://github.com/elkin/commandline/blob/master/src/main/java/io/github/elkin/commandline/Util.java[`Util`] class.
 +
 For example if option is a choice(i.e. can have only few values) you can use
-`Util.choice()` checker.
+link:https://github.com/elkin/commandline/blob/master/src/main/java/io/github/elkin/commandline/Util.java#L50[`Util.choice()`] checker.
 
 * help generator
 +
 You can provide your own help generator to `CommandLineConfiguration`
-constructor.
+constructor. link:https://github.com/elkin/commandline/blob/master/src/main/java/io/github/elkin/commandline/DefaultHelpGenerator.java[ `DefaultHelpGenerator`].
 
 * command line validator
++
+link:https://github.com/elkin/commandline/blob/master/src/main/java/io/github/elkin/commandline/GroupValidator.java[`GroupValidator`] as an example of it.
 
 == Examples
 
