@@ -2,6 +2,7 @@ package io.github.elkin.commandline;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -50,6 +51,7 @@ public class Util {
     public static Predicate<String> choice(String... values)
     {
         return value -> {
+            // though it's a linear search but it works fast enough on small number of values
             for (String v : values) {
                 if (v.equals(value)) {
                     return true;
@@ -58,6 +60,11 @@ public class Util {
 
             return false;
         };
+    }
+
+    public static Predicate<String> choice(Collection<String> values)
+    {
+        return value -> values.contains(value);
     }
 
     public static HelpRequestHandler makeHelpRequestHandler(int exitCode, OutputStream stream)
