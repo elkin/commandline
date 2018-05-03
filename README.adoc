@@ -35,7 +35,7 @@ flag is an option without a value i.e. `-f` or `--flag`
 * mutual exclusive groups
 +
 Sometimes there're options/flags that can't be used together in one command line.
-`GroupValidator` helps with the issue.
+link:https://github.com/elkin/commandline/blob/master/src/main/java/io/github/elkin/commandline/GroupValidator.java[`GroupValidator`] helps with the issue.
 
 == How to extend
 
