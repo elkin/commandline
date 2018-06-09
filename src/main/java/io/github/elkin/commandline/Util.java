@@ -64,7 +64,7 @@ public class Util {
 
     public static Predicate<String> choice(Collection<String> values)
     {
-        return value -> values.contains(value);
+        return values::contains;
     }
 
     public static HelpRequestHandler makeHelpRequestHandler(int exitCode, OutputStream stream)
