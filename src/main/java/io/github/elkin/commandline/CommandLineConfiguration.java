@@ -43,7 +43,7 @@ public class CommandLineConfiguration {
     private final FlagPrefixHandler d_flagPrefixHandler;
     private int d_position;
     private int d_maxLastArgumentSize;
-    private List<Validator> d_checkers;
+    private final List<Validator> d_checkers;
 
     private void checkNameDuplicates(String name, Type nameType)
     {

@@ -8,12 +8,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class GroupValidator implements Validator {
     private int d_groupId;
-    private Set<Integer> d_activeGroupId;
-    private List<Group> d_groups;
+    private final Set<Integer> d_activeGroupId;
+    private final List<Group> d_groups;
 
     public class Group {
         private final String d_name;
@@ -93,7 +92,7 @@ public class GroupValidator implements Validator {
 
             for (Iterator<Option> iter = d_options.iterator(); iter.hasNext();) {
                 Option option = iter.next();
-                String description = option.prefixes().stream().collect(Collectors.joining("|"));
+                String description = String.join("|", option.prefixes());
                 result.append(description);
                 if (iter.hasNext()) {
                     result.append(", ");
@@ -106,7 +105,7 @@ public class GroupValidator implements Validator {
 
             for (Iterator<Flag> iter = d_flags.iterator(); iter.hasNext();) {
                 Flag flag = iter.next();
-                String description = flag.prefixes().stream().collect(Collectors.joining("|"));
+                String description = String.join("|", flag.prefixes());
                 result.append(description);
                 if (iter.hasNext()) {
                     result.append(", ");

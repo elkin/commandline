@@ -66,9 +66,9 @@ public class SimpleCalculator {
 
         Optional<Integer> result = argument.values()
                 .stream()
-                .map(value -> Integer.parseInt(value))
+                .map(Integer::parseInt)
                 .reduce(operators.get(operation));
-        result.ifPresent(r -> output.append(r));
+        result.ifPresent(output::append);
         System.out.println(output.toString());
     }
 }

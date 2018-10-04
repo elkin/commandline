@@ -4,9 +4,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
-public class DefaultHelpGenerator implements HelpGenerator {
+class DefaultHelpGenerator implements HelpGenerator {
     private static final int MAX_COLUMN_WIDTH = 80;
     private static final String DEFAULT_USAGE_LINE = "java -cp ${CLASSPATH} ${MAIN_CLASS} [OPTIONS] ";
 
@@ -70,7 +69,7 @@ public class DefaultHelpGenerator implements HelpGenerator {
             }
 
             builder.append(" (default: ");
-            builder.append(argument.defaultValues().stream().collect(Collectors.joining(", ")));
+            builder.append(String.join(", ", argument.defaultValues()));
             builder.append(")\n");
         }
     }
@@ -124,7 +123,7 @@ public class DefaultHelpGenerator implements HelpGenerator {
             }
 
             builder.append(" (default: ")
-                    .append(option.defaultValues().stream().collect(Collectors.joining(", ")))
+                    .append(String.join(", ", option.defaultValues()))
                     .append(")\n");
         };
 
@@ -162,22 +161,22 @@ public class DefaultHelpGenerator implements HelpGenerator {
 
     private static String getAllPrefixes(Flag flag)
     {
-        return flag.prefixes().stream().collect(Collectors.joining(", "));
+        return String.join(", ", flag.prefixes());
     }
 
     private static String getAllPrefixes(Option option)
     {
-        return option.prefixes().stream().collect(Collectors.joining(", "));
+        return String.join(", ", option.prefixes());
     }
 
-    public DefaultHelpGenerator(String usageLine)
+    DefaultHelpGenerator(String usageLine)
     {
         assert usageLine != null;
 
         d_usageLine = usageLine.isEmpty()? DEFAULT_USAGE_LINE: usageLine;
     }
 
-    public DefaultHelpGenerator()
+    DefaultHelpGenerator()
     {
         this("");
     }

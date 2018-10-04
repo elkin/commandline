@@ -18,15 +18,14 @@ class CommandLineParser {
     private final List<String> d_args;
     private final Map<String, List<String>> d_values;
     private final Set<String> d_flags;
-    private Iterator<Argument> d_argumentIterator;
+    private final Iterator<Argument> d_argumentIterator;
     private Argument d_argument;
-    private List<String> d_argumentRemainder;
+    private final List<String> d_argumentRemainder;
 
     private List<String> preprocessArguments(String[] args)
     {
         List<String> result = new ArrayList<>(args.length);
-        for (int i = 0; i < args.length; ++i) {
-            String arg = args[i];
+        for (String arg : args) {
             if (Util.isShortOption(arg) && arg.length() > Util.SHORT_OPTION_LENGTH) {
                 String prefix = arg.substring(0, Util.SHORT_OPTION_LENGTH);
                 result.add(prefix);

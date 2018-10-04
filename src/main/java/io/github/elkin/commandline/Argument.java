@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public abstract class Argument {
+abstract class Argument {
     private final String d_name;
     private final int d_position;
     private Consumer<String> d_consumer;
@@ -35,60 +35,60 @@ public abstract class Argument {
 
     abstract void setRemainder(Values remainder);
 
-    public String name()
+    String name()
     {
         return d_name;
     }
 
-    public Consumer<String> consumer()
+    Consumer<String> consumer()
     {
         return d_consumer;
     }
 
-    public Argument setConsumer(Consumer<String> consumer)
+    Argument setConsumer(Consumer<String> consumer)
     {
         d_consumer = Objects.requireNonNull(consumer);
         return this;
     }
 
-    public Predicate<String> checker()
+    Predicate<String> checker()
     {
         return d_checker;
     }
 
-    public Argument setChecker(Predicate<String> checker)
+    Argument setChecker(Predicate<String> checker)
     {
         d_checker = Objects.requireNonNull(checker);
         return this;
     }
 
-    public int position()
+    int position()
     {
         return d_position;
     }
 
-    public boolean isRequired()
+    boolean isRequired()
     {
         return d_isRequired;
     }
 
-    public List<String> defaultValues()
+    List<String> defaultValues()
     {
         return Collections.unmodifiableList(d_defaultValues);
     }
 
-    public Argument addDefaultValue(String value)
+    Argument addDefaultValue(String value)
     {
         d_defaultValues.add(Util.checkDefaultValue(value));
         return this;
     }
 
-    public String description()
+    String description()
     {
         return d_description;
     }
 
-    public Argument setDescription(String description)
+    Argument setDescription(String description)
     {
         d_description = Objects.requireNonNull(description);
         return this;

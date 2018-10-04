@@ -60,8 +60,10 @@ public class OptionalArgument extends Argument {
         assert d_value.isPresent();
         assert remainder != null;
         assert !remainder.isEmpty();
+        assert d_value.isPresent();
 
         d_remainder = remainder;
+
         d_values = new ValuesImpl(d_value.get(), d_remainder);
     }
 
