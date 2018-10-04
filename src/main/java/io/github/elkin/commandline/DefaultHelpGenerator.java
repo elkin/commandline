@@ -2,24 +2,39 @@ package io.github.elkin.commandline;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-class DefaultHelpGenerator implements HelpGenerator {
+public class DefaultHelpGenerator implements HelpGenerator {
 
-  private static final int MAX_COLUMN_WIDTH = 80;
+  private static final int DEFAULT_MAX_WIDTH = 80;
   private static final String DEFAULT_USAGE_LINE = "java -cp ${CLASSPATH} ${MAIN_CLASS} [OPTIONS] ";
 
+  private final int maxWidth;
   private final String usageLine;
 
-  DefaultHelpGenerator(String usageLine) {
-    assert usageLine != null;
-
-    this.usageLine = usageLine.isEmpty() ? DEFAULT_USAGE_LINE : usageLine;
+  public DefaultHelpGenerator(String usageLine) {
+    this(DEFAULT_MAX_WIDTH, usageLine);
   }
 
-  DefaultHelpGenerator() {
-    this("");
+  public DefaultHelpGenerator(int maxWidth)
+  {
+    this(maxWidth, DEFAULT_USAGE_LINE);
+  }
+
+  public DefaultHelpGenerator() {
+    this(DEFAULT_MAX_WIDTH, DEFAULT_USAGE_LINE);
+  }
+
+  public DefaultHelpGenerator(int maxWidth, String usageLine)
+  {
+    if (maxWidth <= 0) {
+      throw new IllegalArgumentException("maxWidth can't be less than or equal to 0");
+    }
+
+    this.maxWidth = maxWidth;
+    this.usageLine = Objects.requireNonNull(usageLine, "usageLine isn't nullable");
   }
 
   private static void generateArgumentsCommandLine(
@@ -101,7 +116,7 @@ class DefaultHelpGenerator implements HelpGenerator {
     return longestFlag.map(flagLength -> Math.max(maxLength, flagLength)).orElse(maxLength);
   }
 
-  private static void generateOptionsDescription(StringBuilder builder,
+  private void generateOptionsDescription(StringBuilder builder,
       CommandLineConfiguration configuration) {
     List<Option> options = configuration.options();
     List<Flag> flags = configuration.flags();
@@ -115,7 +130,7 @@ class DefaultHelpGenerator implements HelpGenerator {
 
     int columnWidth = getMaxColumnWidth(configuration);
     String formatString;
-    if (columnWidth <= MAX_COLUMN_WIDTH) {
+    if (columnWidth <= maxWidth) {
       formatString = "    %-" + columnWidth + "s  %s";
     } else {
       formatString = "    %s  %s%n";
