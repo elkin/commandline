@@ -39,11 +39,12 @@ public class GroupValidator implements Validator {
 
     if (activeGroupId.size() > 1) {
       StringBuilder result = new StringBuilder(
-          "Options/flags from different groups can't be used together:\n");
+          "Options/flags from different groups can't be used together:")
+          .append(System.lineSeparator());
       for (Integer groupId : activeGroupId) {
         Group group = groups.get(groupId);
         result.append(group);
-        result.append('\n');
+        result.append(System.lineSeparator());
       }
       throw new ValidationException(result.toString());
     }

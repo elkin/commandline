@@ -59,7 +59,8 @@ class DefaultHelpGenerator implements HelpGenerator {
       return;
     }
 
-    builder.append("Positional arguments:\n");
+    builder.append("Positional arguments:")
+        .append(System.lineSeparator());
 
     Optional<Argument> longestNameArgument = arguments.stream()
         .max(Comparator.comparing(arg -> arg.name().length()));
@@ -73,13 +74,14 @@ class DefaultHelpGenerator implements HelpGenerator {
       builder.append(String.format(formatString, argument.name(), argument.description()));
 
       if (argument.defaultValues().isEmpty()) {
-        builder.append("\n");
+        builder.append(System.lineSeparator());
         continue;
       }
 
       builder.append(" (default: ");
       builder.append(String.join(", ", argument.defaultValues()));
-      builder.append(")\n");
+      builder.append(")")
+          .append(System.lineSeparator());
     }
   }
 
@@ -108,14 +110,15 @@ class DefaultHelpGenerator implements HelpGenerator {
       return;
     }
 
-    builder.append("Prefixed arguments:\n");
+    builder.append("Prefixed arguments:")
+        .append(System.lineSeparator());
 
     int columnWidth = getMaxColumnWidth(configuration);
     String formatString;
     if (columnWidth <= MAX_COLUMN_WIDTH) {
       formatString = "    %-" + columnWidth + "s  %s";
     } else {
-      formatString = "    %s  %s\n";
+      formatString = "    %s  %s%n";
     }
 
     Consumer<Option> optionConsumer = option -> {
@@ -126,25 +129,28 @@ class DefaultHelpGenerator implements HelpGenerator {
               option.description()));
 
       if (option.defaultValues().isEmpty()) {
-        builder.append('\n');
+        builder.append(System.lineSeparator());
         return;
       }
 
       builder.append(" (default: ")
           .append(String.join(", ", option.defaultValues()))
-          .append(")\n");
+          .append(")")
+          .append(System.lineSeparator());
     };
 
     Consumer<Flag> flagConsumer = flag ->
         builder.append(
             String.format(
-                formatString + '\n',
+                formatString,
                 DefaultHelpGenerator.getAllPrefixes(flag),
-                flag.description()));
+                flag.description()))
+            .append(System.lineSeparator());
 
     if (options.stream().anyMatch(Option::isRequired)
         || flags.stream().anyMatch(Flag::isRequired)) {
-      builder.append("  Required:\n");
+      builder.append("  Required:")
+          .append(System.lineSeparator());
       options.stream()
           .filter(Option::isRequired)
           .forEach(optionConsumer);
@@ -156,7 +162,8 @@ class DefaultHelpGenerator implements HelpGenerator {
 
     if (options.stream().anyMatch(option -> !option.isRequired())
         || flags.stream().anyMatch(flag -> !flag.isRequired())) {
-      builder.append("  Optional:\n");
+      builder.append("  Optional:")
+          .append(System.lineSeparator());
       options.stream()
           .filter(option -> !option.isRequired())
           .forEach(optionConsumer);
@@ -182,20 +189,20 @@ class DefaultHelpGenerator implements HelpGenerator {
     builder.append("Usage: ").append(usageLine);
     generateArgumentsCommandLine(builder, configuration);
 
-    builder.append('\n');
+    builder.append(System.lineSeparator());
 
     if (!configuration.description().isEmpty()) {
-      builder.append("\n");
+      builder.append(System.lineSeparator());
 
       builder.append(configuration.description());
-      builder.append("\n");
+      builder.append(System.lineSeparator());
     }
 
-    builder.append("\n");
+    builder.append(System.lineSeparator());
 
     generateArgumentsDescription(builder, configuration);
 
-    builder.append("\n");
+    builder.append(System.lineSeparator());
 
     generateOptionsDescription(builder, configuration);
 
