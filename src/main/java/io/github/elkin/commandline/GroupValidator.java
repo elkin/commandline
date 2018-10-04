@@ -10,12 +10,12 @@ import java.util.Set;
 
 public class GroupValidator implements Validator {
 
-  private final Set<Integer> activeGroupId;
+  private final Set<Integer> activeGroupIds;
   private final List<Group> groups;
   private int groupId;
 
   public GroupValidator() {
-    activeGroupId = new HashSet<>();
+    activeGroupIds = new HashSet<>();
     // groupId = 0; not needed, by default
     groups = new ArrayList<>();
   }
@@ -37,12 +37,12 @@ public class GroupValidator implements Validator {
     assert options != null;
     assert flags != null;
 
-    if (activeGroupId.size() > 1) {
+    if (activeGroupIds.size() > 1) {
       StringBuilder result = new StringBuilder(
           "Options/flags from different groups can't be used together:")
           .append(System.lineSeparator());
-      for (Integer groupId : activeGroupId) {
-        Group group = groups.get(groupId);
+      for (Integer gid : activeGroupIds) {
+        Group group = groups.get(gid);
         result.append(group);
         result.append(System.lineSeparator());
       }
@@ -56,10 +56,6 @@ public class GroupValidator implements Validator {
     private final int id;
     private final List<Option> options;
     private final List<Flag> flags;
-
-    private Group(int id) {
-      this("", id);
-    }
 
     private Group(String name, int id) {
       assert name != null;
@@ -75,7 +71,7 @@ public class GroupValidator implements Validator {
       Objects.requireNonNull(flag);
       flag.setConsumer(
           flag.consumer().andThen(f -> {
-            activeGroupId.add(id);
+            activeGroupIds.add(id);
             flags.add(flag);
           }));
       return this;
@@ -95,7 +91,7 @@ public class GroupValidator implements Validator {
 
       option.setConsumer(
           option.consumer().andThen(o -> {
-            activeGroupId.add(id);
+            activeGroupIds.add(id);
             options.add(option);
           }));
       return this;
