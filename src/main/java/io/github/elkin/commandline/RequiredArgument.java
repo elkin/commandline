@@ -4,85 +4,76 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public final class RequiredArgument extends Argument {
-    private String value;
-    private Values remainder;
-    private Values values;
 
-    RequiredArgument(String name, int position) {
-        super(name, true, position);
-        remainder = ValuesImpl.empty();
-        values = ValuesImpl.empty();
-    }
+  private String value;
+  private Values remainder;
+  private Values values;
 
-    @Override
-    public RequiredArgument addDefaultValue(String value)
-    {
-        super.addDefaultValue(value);
-        return this;
-    }
+  RequiredArgument(String name, int position) {
+    super(name, true, position);
+    remainder = ValuesImpl.empty();
+    values = ValuesImpl.empty();
+  }
 
-    @Override
-    void setValue(String value)
-    {
-        assert value != null;
-        assert !value.isEmpty();
+  @Override
+  public RequiredArgument addDefaultValue(String value) {
+    super.addDefaultValue(value);
+    return this;
+  }
 
-        this.value = value;
-        values = new ValuesImpl(value);
-    }
+  @Override
+  void setValue(String value) {
+    assert value != null;
+    assert !value.isEmpty();
 
-    @Override
-    void setRemainder(Values remainder)
-    {
-        assert remainder != null;
-        assert !remainder.isEmpty();
+    this.value = value;
+    values = new ValuesImpl(value);
+  }
 
-        this.remainder = remainder;
-        values = new ValuesImpl(value, this.remainder);
-    }
+  @Override
+  void setRemainder(Values remainder) {
+    assert remainder != null;
+    assert !remainder.isEmpty();
 
-    @Override
-    public RequiredArgument setChecker(Predicate<String> checker)
-    {
-        super.setChecker(checker);
-        return this;
-    }
+    this.remainder = remainder;
+    values = new ValuesImpl(value, this.remainder);
+  }
 
-    @Override
-    public RequiredArgument setConsumer(Consumer<String> consumer)
-    {
-        super.setConsumer(consumer);
-        return this;
-    }
+  @Override
+  public RequiredArgument setChecker(Predicate<String> checker) {
+    super.setChecker(checker);
+    return this;
+  }
 
-    @Override
-    public RequiredArgument setDescription(String description)
-    {
-        super.setDescription(description);
-        return this;
-    }
+  @Override
+  public RequiredArgument setConsumer(Consumer<String> consumer) {
+    super.setConsumer(consumer);
+    return this;
+  }
 
-    public String value()
-    {
-        return value;
-    }
+  @Override
+  public RequiredArgument setDescription(String description) {
+    super.setDescription(description);
+    return this;
+  }
 
-    public Values remainder()
-    {
-        return remainder;
-    }
+  public String value() {
+    return value;
+  }
 
-    public Values values()
-    {
-        return values;
-    }
+  public Values remainder() {
+    return remainder;
+  }
 
-    @Override
-    public String toString()
-    {
-        return String.format(
-                "Required argument: %s, description: %s",
-                name(),
-                description());
-    }
+  public Values values() {
+    return values;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+        "Required argument: %s, description: %s",
+        name(),
+        description());
+  }
 }

@@ -8,89 +8,78 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 abstract class Argument {
-    private final String d_name;
-    private final int d_position;
-    private Consumer<String> d_consumer;
-    private Predicate<String> d_checker;
-    private boolean d_isRequired;
-    private List<String> d_defaultValues;
-    private String d_description;
 
-    Argument(String name, boolean isRequired, int position)
-    {
-        assert name != null;
-        assert !name.isEmpty();
-        assert position >= 0;
+  private final String name;
+  private final int position;
+  private Consumer<String> consumer;
+  private Predicate<String> checker;
+  private boolean isRequired;
+  private List<String> defaultValues;
+  private String description;
 
-        d_name = name;
-        d_position = position;
-        d_consumer = Util.empty();
-        d_checker = value ->  true;
-        d_isRequired = isRequired;
-        d_defaultValues = new ArrayList<>();
-        d_description = "";
-    }
+  Argument(String name, boolean isRequired, int position) {
+    assert name != null;
+    assert !name.isEmpty();
+    assert position >= 0;
 
-    abstract void setValue(String value);
+    this.name = name;
+    this.position = position;
+    consumer = Util.empty();
+    checker = value -> true;
+    this.isRequired = isRequired;
+    defaultValues = new ArrayList<>();
+    description = "";
+  }
 
-    abstract void setRemainder(Values remainder);
+  abstract void setValue(String value);
 
-    String name()
-    {
-        return d_name;
-    }
+  abstract void setRemainder(Values remainder);
 
-    Consumer<String> consumer()
-    {
-        return d_consumer;
-    }
+  String name() {
+    return name;
+  }
 
-    Argument setConsumer(Consumer<String> consumer)
-    {
-        d_consumer = Objects.requireNonNull(consumer);
-        return this;
-    }
+  Consumer<String> consumer() {
+    return consumer;
+  }
 
-    Predicate<String> checker()
-    {
-        return d_checker;
-    }
+  Argument setConsumer(Consumer<String> consumer) {
+    this.consumer = Objects.requireNonNull(consumer);
+    return this;
+  }
 
-    Argument setChecker(Predicate<String> checker)
-    {
-        d_checker = Objects.requireNonNull(checker);
-        return this;
-    }
+  Predicate<String> checker() {
+    return checker;
+  }
 
-    int position()
-    {
-        return d_position;
-    }
+  Argument setChecker(Predicate<String> checker) {
+    this.checker = Objects.requireNonNull(checker);
+    return this;
+  }
 
-    boolean isRequired()
-    {
-        return d_isRequired;
-    }
+  int position() {
+    return position;
+  }
 
-    List<String> defaultValues()
-    {
-        return Collections.unmodifiableList(d_defaultValues);
-    }
+  boolean isRequired() {
+    return isRequired;
+  }
 
-    Argument addDefaultValue(String value)
-    {
-        d_defaultValues.add(Util.checkDefaultValue(value));
-        return this;
-    }
+  List<String> defaultValues() {
+    return Collections.unmodifiableList(defaultValues);
+  }
 
-    String description()
-    {
-        return d_description;
-    }
+  Argument addDefaultValue(String value) {
+    defaultValues.add(Util.checkDefaultValue(value));
+    return this;
+  }
 
-    Argument setDescription(String description)
-    {
-        d_description = Objects.requireNonNull(description);
-        return this;
-    }
+  String description() {
+    return description;
+  }
+
+  Argument setDescription(String description) {
+    this.description = Objects.requireNonNull(description);
+    return this;
+  }
 }

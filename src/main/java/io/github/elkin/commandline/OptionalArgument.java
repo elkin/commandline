@@ -5,89 +5,80 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public final class OptionalArgument extends Argument {
-    private Optional<String> value;
-    private Values remainder;
-    private Values values;
 
-    OptionalArgument(String name, int position) {
-        super(name, false, position);
-        value = Optional.empty();
-        remainder = ValuesImpl.empty();
-        values = ValuesImpl.empty();
-    }
+  private Optional<String> value;
+  private Values remainder;
+  private Values values;
 
-    @Override
-    public OptionalArgument addDefaultValue(String value)
-    {
-        super.addDefaultValue(value);
-        return this;
-    }
+  OptionalArgument(String name, int position) {
+    super(name, false, position);
+    value = Optional.empty();
+    remainder = ValuesImpl.empty();
+    values = ValuesImpl.empty();
+  }
 
-    @Override
-    public OptionalArgument setChecker(Predicate<String> checker)
-    {
-        super.setChecker(checker);
-        return this;
-    }
+  @Override
+  public OptionalArgument addDefaultValue(String value) {
+    super.addDefaultValue(value);
+    return this;
+  }
 
-    @Override
-    public OptionalArgument setConsumer(Consumer<String> consumer)
-    {
-        super.setConsumer(consumer);
-        return this;
-    }
+  @Override
+  public OptionalArgument setChecker(Predicate<String> checker) {
+    super.setChecker(checker);
+    return this;
+  }
 
-    @Override
-    public OptionalArgument setDescription(String description)
-    {
-        super.setDescription(description);
-        return this;
-    }
+  @Override
+  public OptionalArgument setConsumer(Consumer<String> consumer) {
+    super.setConsumer(consumer);
+    return this;
+  }
 
-    @Override
-    void setValue(String value)
-    {
-        assert value != null;
-        assert !value.isEmpty();
+  @Override
+  public OptionalArgument setDescription(String description) {
+    super.setDescription(description);
+    return this;
+  }
 
-        this.value = Optional.of(value);
-        values = new ValuesImpl(value);
-    }
+  @Override
+  void setValue(String value) {
+    assert value != null;
+    assert !value.isEmpty();
 
-    @Override
-    void setRemainder(Values remainder)
-    {
-        assert value.isPresent();
-        assert remainder != null;
-        assert !remainder.isEmpty();
-        assert value.isPresent();
+    this.value = Optional.of(value);
+    values = new ValuesImpl(value);
+  }
 
-        this.remainder = remainder;
+  @Override
+  void setRemainder(Values remainder) {
+    assert value.isPresent();
+    assert remainder != null;
+    assert !remainder.isEmpty();
+    assert value.isPresent();
 
-        values = new ValuesImpl(value.get(), this.remainder);
-    }
+    this.remainder = remainder;
 
-    public Optional<String> value()
-    {
-        return value;
-    }
+    values = new ValuesImpl(value.get(), this.remainder);
+  }
 
-    public Values remainder()
-    {
-        return remainder;
-    }
+  public Optional<String> value() {
+    return value;
+  }
 
-    public Values values()
-    {
-        return values;
-    }
+  public Values remainder() {
+    return remainder;
+  }
 
-    @Override
-    public String toString()
-    {
-        return String.format(
-                "Optional argument: %s, description: %s",
-                name(),
-                description());
-    }
+  public Values values() {
+    return values;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+        "Optional argument: %s, description: %s",
+        name(),
+        description());
+  }
 }

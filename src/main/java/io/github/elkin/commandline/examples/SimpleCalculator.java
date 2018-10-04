@@ -6,7 +6,6 @@ import io.github.elkin.commandline.Flag;
 import io.github.elkin.commandline.Option;
 import io.github.elkin.commandline.RequiredArgument;
 import io.github.elkin.commandline.Util;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -14,65 +13,65 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 public class SimpleCalculator {
-    private static final String SUM = "sum";
-    private static final String PROD = "prod";
-    private static final String SUB = "sub";
 
-    public static void main(String[] args)
-    {
-        CommandLineConfiguration configuration = new CommandLineConfiguration();
-        RequiredArgument argument = configuration.addRequiredArgument("numbers")
-                .setDescription("Integer number")
-                .setChecker(Util.isInteger())
-                .addDefaultValue("0");
+  private static final String SUM = "sum";
+  private static final String PROD = "prod";
+  private static final String SUB = "sub";
 
-        Option option = configuration.addOption("operation", "-o")
-                .addPrefix("--operation")
-                .setDescription("Operation type")
-                .addDefaultValue(SUM)
-                .setChecker(Util.choice(SUM, PROD, SUB));
+  public static void main(String[] args) {
+    CommandLineConfiguration configuration = new CommandLineConfiguration();
+    RequiredArgument argument = configuration.addRequiredArgument("numbers")
+        .setDescription("Integer number")
+        .setChecker(Util.isInteger())
+        .addDefaultValue("0");
 
-        Flag flag = configuration.addFlag("verbose", "-v")
-                .addPrefix("--verbose")
-                .setDescription("Verbose mode");
+    Option option = configuration.addOption("operation", "-o")
+        .addPrefix("--operation")
+        .setDescription("Operation type")
+        .addDefaultValue(SUM)
+        .setChecker(Util.choice(SUM, PROD, SUB));
 
-        CommandLine.parse(configuration, args);
+    Flag flag = configuration.addFlag("verbose", "-v")
+        .addPrefix("--verbose")
+        .setDescription("Verbose mode");
 
-        // the option has default value so it's safe to use get here
-        assert option.value().isPresent();
-        String operation = option.value().get();
+    CommandLine.parse(configuration, args);
 
-        Map<String, BinaryOperator<Integer>> operators = new HashMap<>();
-        operators.put(SUM, (lhs, rhs) -> lhs + rhs);
-        operators.put(PROD, (lhs, rhs) -> lhs * rhs);
-        operators.put(SUB, (lhs, rhs) -> lhs - rhs);
+    // the option has default value so it's safe to use get here
+    assert option.value().isPresent();
+    String operation = option.value().get();
 
-        StringBuilder output = new StringBuilder();
-        if (flag.isSet()) {
-            String sign = "";
-            switch (operation) {
-                case SUM:
-                    sign = " + ";
-                    break;
-                case PROD:
-                    sign = " * ";
-                    break;
+    Map<String, BinaryOperator<Integer>> operators = new HashMap<>();
+    operators.put(SUM, (lhs, rhs) -> lhs + rhs);
+    operators.put(PROD, (lhs, rhs) -> lhs * rhs);
+    operators.put(SUB, (lhs, rhs) -> lhs - rhs);
 
-                case SUB:
-                    sign = " - ";
-                    break;
-            }
+    StringBuilder output = new StringBuilder();
+    if (flag.isSet()) {
+      String sign = "";
+      switch (operation) {
+        case SUM:
+          sign = " + ";
+          break;
+        case PROD:
+          sign = " * ";
+          break;
 
-            output.append(
-                    argument.values().stream().collect(Collectors.joining(sign)));
-            output.append(" = ");
-        }
+        case SUB:
+          sign = " - ";
+          break;
+      }
 
-        Optional<Integer> result = argument.values()
-                .stream()
-                .map(Integer::parseInt)
-                .reduce(operators.get(operation));
-        result.ifPresent(output::append);
-        System.out.println(output.toString());
+      output.append(
+          argument.values().stream().collect(Collectors.joining(sign)));
+      output.append(" = ");
     }
+
+    Optional<Integer> result = argument.values()
+        .stream()
+        .map(Integer::parseInt)
+        .reduce(operators.get(operation));
+    result.ifPresent(output::append);
+    System.out.println(output.toString());
+  }
 }
