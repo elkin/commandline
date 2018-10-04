@@ -9,16 +9,16 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
-public class Flag {
-    private final String d_name;
-    private final SortedSet<String> d_prefixes;
-    private boolean d_isSet;
-    private boolean d_isRequired;
-    private int d_maxNumberOfValues;
-    private int d_numberOfFlags;
-    private Consumer<Flag> d_consumer;
-    private String d_description;
-    private final FlagPrefixHandler d_flagPrefixHandler;
+public final class Flag {
+    private final String name;
+    private final SortedSet<String> prefixes;
+    private boolean isSet;
+    private boolean isRequired;
+    private int maxNumberOfValues;
+    private int numberOfFlags;
+    private Consumer<Flag> consumer;
+    private String description;
+    private final FlagPrefixHandler flagPrefixHandler;
 
     Flag(String name, String prefix, FlagPrefixHandler flagPrefixHandler)
     {
@@ -27,60 +27,60 @@ public class Flag {
         assert prefix != null;
         assert Util.isOption(prefix);
 
-        d_name = name;
-        d_prefixes = new TreeSet<>();
-        d_prefixes.add(prefix);
-        d_maxNumberOfValues = 1;
-        d_numberOfFlags = 0;
-        d_consumer = Util.empty();
-        d_flagPrefixHandler = flagPrefixHandler;
+        this.name = name;
+        prefixes = new TreeSet<>();
+        prefixes.add(prefix);
+        maxNumberOfValues = 1;
+        numberOfFlags = 0;
+        consumer = Util.empty();
+        this.flagPrefixHandler = flagPrefixHandler;
     }
 
     void set()
     {
-        d_isSet = true;
-        d_numberOfFlags++;
-        d_consumer.accept(this);
+        isSet = true;
+        numberOfFlags++;
+        consumer.accept(this);
     }
 
     public String name()
     {
-        return d_name;
+        return name;
     }
 
     public Set<String> prefixes()
     {
-        return Collections.unmodifiableSet(d_prefixes);
+        return Collections.unmodifiableSet(prefixes);
     }
 
     public Flag addPrefix(String prefix)
     {
         Util.checkPrefix(prefix);
-        d_flagPrefixHandler.handle(prefix, this);
+        flagPrefixHandler.handle(prefix, this);
 
-        d_prefixes.add(prefix);
+        prefixes.add(prefix);
         return this;
     }
 
     public boolean isSet()
     {
-        return d_isSet;
+        return isSet;
     }
 
     public Flag require()
     {
-        d_isRequired = true;
+        isRequired = true;
         return this;
     }
 
     public boolean isRequired()
     {
-        return d_isRequired;
+        return isRequired;
     }
 
     public int maxNumberOfValues()
     {
-        return d_maxNumberOfValues;
+        return maxNumberOfValues;
     }
 
     public Flag setMaxNumberOfValues(int maxNumberOfValues)
@@ -88,34 +88,34 @@ public class Flag {
         if (maxNumberOfValues < 1) {
             throw new IllegalArgumentException("The value can't be less than 1");
         }
-        d_maxNumberOfValues = maxNumberOfValues;
+        this.maxNumberOfValues = maxNumberOfValues;
         return this;
     }
 
     public int numberOfFlags()
     {
-        return d_numberOfFlags;
+        return numberOfFlags;
     }
 
     public Flag setConsumer(Consumer<Flag> consumer)
     {
-        d_consumer = Objects.requireNonNull(consumer);
+        this.consumer = Objects.requireNonNull(consumer);
         return this;
     }
 
     public Consumer<Flag> consumer()
     {
-        return d_consumer;
+        return consumer;
     }
 
     public String description()
     {
-        return d_description;
+        return description;
     }
 
     public Flag setDescription(String description)
     {
-        d_description = Objects.requireNonNull(description);
+        this.description = Objects.requireNonNull(description);
         return this;
     }
 
@@ -124,8 +124,8 @@ public class Flag {
     {
         return String.format(
                 "Flag: %s, prefixes: %s, description: %s",
-                d_name,
-                d_prefixes,
-                d_description);
+                name,
+                prefixes,
+                description);
     }
 }

@@ -9,13 +9,13 @@ import java.util.stream.Stream;
 
 
 class ValuesImpl implements Values {
-    private List<String> d_values;
+    private List<String> values;
 
-    private static final ValuesImpl s_empty = new ValuesImpl(Collections.emptyList());
+    private static final ValuesImpl EMPTY = new ValuesImpl(Collections.emptyList());
 
     static ValuesImpl empty()
     {
-        return s_empty;
+        return EMPTY;
     }
 
     ValuesImpl(String value)
@@ -23,14 +23,14 @@ class ValuesImpl implements Values {
         assert value != null;
         assert !value.isEmpty();
 
-        d_values = Collections.singletonList(value);
+        values = Collections.singletonList(value);
     }
 
     ValuesImpl(List<String> values)
     {
         assert values != null;
 
-        d_values = Collections.unmodifiableList(values);
+        this.values = Collections.unmodifiableList(values);
     }
 
     ValuesImpl(String firstValue, Values remainder)
@@ -39,23 +39,23 @@ class ValuesImpl implements Values {
         assert !firstValue.isEmpty();
         assert  remainder != null;
 
-        d_values = new ArrayList<>(1 + remainder.size());
-        d_values.add(firstValue);
-        remainder.toList(d_values);
-        d_values = Collections.unmodifiableList(d_values);
+        values = new ArrayList<>(1 + remainder.size());
+        values.add(firstValue);
+        remainder.toList(values);
+        values = Collections.unmodifiableList(values);
     }
 
     @Override
     public String getFirstValue()
     {
-        return d_values.get(0);
+        return values.get(0);
     }
 
     @Override
     public Iterator<String> iterator()
     {
         // iterator for an unmodifiable list can't remove elements
-        return d_values.iterator();
+        return values.iterator();
     }
 
     @Override
@@ -64,42 +64,42 @@ class ValuesImpl implements Values {
         assert index >= 0;
         assert index < size();
 
-        return d_values.get(index);
+        return values.get(index);
     }
 
     @Override
     public int size()
     {
-        return d_values.size();
+        return values.size();
     }
 
     @Override
     public Stream<String> stream()
     {
-        return d_values.stream();
+        return values.stream();
     }
 
     @Override
     public boolean isEmpty()
     {
-        return d_values.isEmpty();
+        return values.isEmpty();
     }
 
     @Override
     public List<String> toList() {
-        return new ArrayList<>(d_values);
+        return new ArrayList<>(values);
     }
 
     @Override
     public List<String> toList(List<String> list) {
-        list.addAll(d_values);
+        list.addAll(values);
         return list;
     }
 
     @Override
     public List<String> toList(Supplier<List<String>> supplier) {
         List<String> result = supplier.get();
-        result.addAll(d_values);
+        result.addAll(values);
         return result;
     }
 }

@@ -8,6 +8,60 @@ import java.util.Iterator;
 import java.util.List;
 
 class CommandLineIterator {
+    private final ArgumentHandler argumentHandler;
+    private final PrefixChecker prefixChecker;
+    private final OptionHandler optionHandler;
+    private final FlagHandler flagHandler;
+
+    CommandLineIterator(ArgumentHandler argumentHandler,
+                        PrefixChecker prefixChecker,
+                        OptionHandler optionHandler,
+                        FlagHandler flagHandler)
+    {
+        this.argumentHandler = argumentHandler;
+        this.prefixChecker = prefixChecker;
+        this.optionHandler = optionHandler;
+        this.flagHandler = flagHandler;
+    }
+
+    void iterate(List<String> args)
+    {
+        for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
+            String arg = iter.next();
+
+            if (Util.isOption(arg)) {
+                if (!prefixChecker.isPrefixedRegistered(arg)) {
+                    throw new UnknownPrefixException("Unknown prefix " + arg);
+                }
+
+                if (flagHandler.handle(arg)) {
+                    continue;
+                }
+
+                if (!iter.hasNext()) {
+                    throw new NoValueException(
+                            String.format("No value provided for option with prefix <%s>", arg));
+                }
+
+                String optionValue = iter.next();
+                if (Util.isOption(optionValue)) {
+                    throw new NoValueException(
+                            String.format("No value provided for option with prefix <%s>", arg));
+                }
+
+                if (optionHandler.handle(arg, optionValue)) {
+                    continue;
+                }
+
+                throw new UnhandledArgumentException(String.format("Unhandled argument <%s>", arg));
+            }
+
+            if (!argumentHandler.handle(arg)) {
+                throw new UnhandledArgumentException(String.format("Unhandled argument <%s>", arg));
+            }
+        }
+    }
+
     @FunctionalInterface
     interface ArgumentHandler {
         boolean handle(String argument);
@@ -26,59 +80,5 @@ class CommandLineIterator {
     @FunctionalInterface
     interface FlagHandler {
         boolean handle(String prefix);
-    }
-
-    private final ArgumentHandler d_argumentHandler;
-    private final PrefixChecker d_prefixChecker;
-    private final OptionHandler d_optionHandler;
-    private final FlagHandler d_flagHandler;
-
-    CommandLineIterator(ArgumentHandler argumentHandler,
-                        PrefixChecker prefixChecker,
-                        OptionHandler optionHandler,
-                        FlagHandler flagHandler)
-    {
-        d_argumentHandler = argumentHandler;
-        d_prefixChecker = prefixChecker;
-        d_optionHandler = optionHandler;
-        d_flagHandler = flagHandler;
-    }
-
-    void iterate(List<String> args)
-    {
-        for (Iterator<String> iter = args.iterator(); iter.hasNext();) {
-            String arg = iter.next();
-
-            if (Util.isOption(arg)) {
-                if (!d_prefixChecker.isPrefixedRegistered(arg)) {
-                    throw new UnknownPrefixException("Unknown prefix " + arg);
-                }
-
-                if (d_flagHandler.handle(arg)) {
-                    continue;
-                }
-
-                if (!iter.hasNext()) {
-                    throw new NoValueException(
-                            String.format("No value provided for option with prefix <%s>", arg));
-                }
-
-                String optionValue = iter.next();
-                if (Util.isOption(optionValue)) {
-                    throw new NoValueException(
-                            String.format("No value provided for option with prefix <%s>", arg));
-                }
-
-                if (d_optionHandler.handle(arg, optionValue)) {
-                    continue;
-                }
-
-                throw new UnhandledArgumentException(String.format("Unhandled argument <%s>", arg));
-            }
-
-            if (!d_argumentHandler.handle(arg)) {
-                throw new UnhandledArgumentException(String.format("Unhandled argument <%s>", arg));
-            }
-        }
     }
 }

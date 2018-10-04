@@ -14,6 +14,10 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 public class SimpleCalculator {
+    private static final String SUM = "sum";
+    private static final String PROD = "prod";
+    private static final String SUB = "sub";
+
     public static void main(String[] args)
     {
         CommandLineConfiguration configuration = new CommandLineConfiguration();
@@ -25,8 +29,8 @@ public class SimpleCalculator {
         Option option = configuration.addOption("operation", "-o")
                 .addPrefix("--operation")
                 .setDescription("Operation type")
-                .addDefaultValue("sum")
-                .setChecker(Util.choice("sum", "prod", "sub"));
+                .addDefaultValue(SUM)
+                .setChecker(Util.choice(SUM, PROD, SUB));
 
         Flag flag = configuration.addFlag("verbose", "-v")
                 .addPrefix("--verbose")
@@ -39,22 +43,22 @@ public class SimpleCalculator {
         String operation = option.value().get();
 
         Map<String, BinaryOperator<Integer>> operators = new HashMap<>();
-        operators.put("sum", (lhs, rhs) -> lhs + rhs);
-        operators.put("prod", (lhs, rhs) -> lhs * rhs);
-        operators.put("sub", (lhs, rhs) -> lhs - rhs);
+        operators.put(SUM, (lhs, rhs) -> lhs + rhs);
+        operators.put(PROD, (lhs, rhs) -> lhs * rhs);
+        operators.put(SUB, (lhs, rhs) -> lhs - rhs);
 
         StringBuilder output = new StringBuilder();
         if (flag.isSet()) {
             String sign = "";
             switch (operation) {
-                case "sum":
+                case SUM:
                     sign = " + ";
                     break;
-                case "prod":
+                case PROD:
                     sign = " * ";
                     break;
 
-                case "sub":
+                case SUB:
                     sign = " - ";
                     break;
             }

@@ -248,12 +248,12 @@ class CommandLineParser {
         Map<String, Values> commandLineValues = new HashMap<>();
         d_values.forEach((name, v) -> commandLineValues.put(name, new ValuesImpl(v)));
 
-        Set<String> names = d_configuration.arguments()
+        Set<String> allNames = d_configuration.arguments()
                 .stream()
                 .map(Argument::name)
                 .collect(Collectors.toSet());
 
-        names.addAll(d_configuration.options()
+        allNames.addAll(d_configuration.options()
                 .stream()
                 .map(Option::name)
                 .collect(Collectors.toSet()));
@@ -262,7 +262,7 @@ class CommandLineParser {
                 .map(Flag::name).collect(Collectors.toSet());
 
         return new CommandLine(
-                names,
+                allNames,
                 flagNames,
                 commandLineValues,
                 d_flags);

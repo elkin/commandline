@@ -4,16 +4,16 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class OptionalArgument extends Argument {
-    private Optional<String> d_value;
-    private Values d_remainder;
-    private Values d_values;
+public final class OptionalArgument extends Argument {
+    private Optional<String> value;
+    private Values remainder;
+    private Values values;
 
     OptionalArgument(String name, int position) {
         super(name, false, position);
-        d_value = Optional.empty();
-        d_remainder = ValuesImpl.empty();
-        d_values = ValuesImpl.empty();
+        value = Optional.empty();
+        remainder = ValuesImpl.empty();
+        values = ValuesImpl.empty();
     }
 
     @Override
@@ -50,36 +50,36 @@ public class OptionalArgument extends Argument {
         assert value != null;
         assert !value.isEmpty();
 
-        d_value = Optional.of(value);
-        d_values = new ValuesImpl(value);
+        this.value = Optional.of(value);
+        values = new ValuesImpl(value);
     }
 
     @Override
     void setRemainder(Values remainder)
     {
-        assert d_value.isPresent();
+        assert value.isPresent();
         assert remainder != null;
         assert !remainder.isEmpty();
-        assert d_value.isPresent();
+        assert value.isPresent();
 
-        d_remainder = remainder;
+        this.remainder = remainder;
 
-        d_values = new ValuesImpl(d_value.get(), d_remainder);
+        values = new ValuesImpl(value.get(), this.remainder);
     }
 
     public Optional<String> value()
     {
-        return d_value;
+        return value;
     }
 
     public Values remainder()
     {
-        return d_remainder;
+        return remainder;
     }
 
     public Values values()
     {
-        return d_values;
+        return values;
     }
 
     @Override

@@ -3,15 +3,15 @@ package io.github.elkin.commandline;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class RequiredArgument extends Argument {
-    private String d_value;
-    private Values d_remainder;
-    private Values d_values;
+public final class RequiredArgument extends Argument {
+    private String value;
+    private Values remainder;
+    private Values values;
 
     RequiredArgument(String name, int position) {
         super(name, true, position);
-        d_remainder = ValuesImpl.empty();
-        d_values = ValuesImpl.empty();
+        remainder = ValuesImpl.empty();
+        values = ValuesImpl.empty();
     }
 
     @Override
@@ -27,8 +27,8 @@ public class RequiredArgument extends Argument {
         assert value != null;
         assert !value.isEmpty();
 
-        d_value = value;
-        d_values = new ValuesImpl(value);
+        this.value = value;
+        values = new ValuesImpl(value);
     }
 
     @Override
@@ -37,8 +37,8 @@ public class RequiredArgument extends Argument {
         assert remainder != null;
         assert !remainder.isEmpty();
 
-        d_remainder = remainder;
-        d_values = new ValuesImpl(d_value, d_remainder);
+        this.remainder = remainder;
+        values = new ValuesImpl(value, this.remainder);
     }
 
     @Override
@@ -64,17 +64,17 @@ public class RequiredArgument extends Argument {
 
     public String value()
     {
-        return d_value;
+        return value;
     }
 
     public Values remainder()
     {
-        return d_remainder;
+        return remainder;
     }
 
     public Values values()
     {
-        return d_values;
+        return values;
     }
 
     @Override
