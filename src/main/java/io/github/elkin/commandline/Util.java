@@ -1,7 +1,9 @@
 package io.github.elkin.commandline;
 
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -62,7 +64,8 @@ public class Util {
 
   public static HelpRequestHandler makeHelpRequestHandler(int exitCode, OutputStream stream) {
     return (configuration, args) -> {
-      try (PrintWriter writer = new PrintWriter(stream)) {
+      try (PrintWriter writer = new PrintWriter(
+          new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
         writer.println(configuration);
       }
       System.exit(exitCode);
@@ -71,7 +74,8 @@ public class Util {
 
   public static ExceptionHandler makeExceptionHandler(int exitCode, OutputStream stream) {
     return (e, configuration, args) -> {
-      try (PrintWriter writer = new PrintWriter(stream)) {
+      try (PrintWriter writer = new PrintWriter(
+          new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
         writer.println(e.getMessage());
         writer.println(configuration);
         writer.flush();
